@@ -15,7 +15,7 @@ class TabButtomFactory(val context:Context,val tabLayout: TabLayout) {
         val view = LayoutInflater.from(context).inflate(R.layout.tab_item,null)
         val image:ImageView= view.findViewById(R.id.icon)
         val text:TextView = view.findViewById(R.id.title)
-        image.setBackgroundResource(icon)
+        image.setImageResource(icon)
         text.setText(title)
         val tab = tabLayout.newTab()
         tab.setCustomView(view)

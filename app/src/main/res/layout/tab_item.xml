@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/icon"
-        android:background="@drawable/home"
+        android:src="@drawable/home"
         android:layout_width="24dp"
         android:layout_height="24dp"/>
 
