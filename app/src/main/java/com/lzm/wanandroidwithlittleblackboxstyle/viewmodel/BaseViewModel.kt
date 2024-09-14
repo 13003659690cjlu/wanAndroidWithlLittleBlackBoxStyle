@@ -1,4 +1,4 @@
-package com.lzm.wanandroidwithlittleblackboxstyle.view.viewmodel
+package com.lzm.wanandroidwithlittleblackboxstyle.viewmodel
 
 import androidx.lifecycle.ViewModel
 
