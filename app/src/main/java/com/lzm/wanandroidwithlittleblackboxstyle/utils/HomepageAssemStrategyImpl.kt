@@ -9,11 +9,14 @@ class HomepageAssemStrategyImpl:ITopTabAssemblyStrategy {
     private val logger: org.slf4j.Logger? = LoggerFactory.getLogger(HomepageAssemStrategyImpl::class.java)
     override fun AssemblyStrategy(leftTab: TabLayout, rightTab: TabLayout) {
         leftTab.removeAllTabs()
-        val buttonTitleArray= arrayOf("推荐")
+        val buttonTitleArray= arrayOf("推荐","学习路线","置顶")
         for(index in buttonTitleArray.indices){
             val tab = leftTab.newTab()
             tab.setText(buttonTitleArray.get(index))
             leftTab.addTab(tab)
         }
+
+
+
     }
 }

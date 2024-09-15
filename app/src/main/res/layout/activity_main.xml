@@ -45,7 +45,8 @@
         app:tabIndicatorGravity="center"
         app:tabMode="fixed"
         app:tabSelectedTextColor="#ff2f6e"
-        app:tabTextColor="@color/black" />
+        app:tabTextColor="@color/black" >
+    </com.google.android.material.tabs.TabLayout>
 
     <FrameLayout
         android:id="@+id/fragment_container"

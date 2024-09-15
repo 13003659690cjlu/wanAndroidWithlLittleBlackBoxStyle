@@ -5,28 +5,21 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.lzm.wanandroidwithlittleblackboxstyle.utils.AssemTopTab
-import com.lzm.wanandroidwithlittleblackboxstyle.utils.HomepageAssemStrategyImpl
 import com.lzm.wanandroidwithlittleblackboxstyle.view.TabButtomFactory
 import com.lzm.wanandroidwithlittleblackboxstyle.view.fragment.MainFragmentFactory
 import com.lzm.wanandroidwithlittleblackboxstyle.databinding.ActivityMainBinding
-import com.lzm.wanandroidwithlittleblackboxstyle.utils.AccountpageAssemStrategyImpl
-import com.lzm.wanandroidwithlittleblackboxstyle.utils.ProjectpageAssemStrategyImpl
-import com.lzm.wanandroidwithlittleblackboxstyle.utils.SquarepageAssemStrategyImpl
-import com.lzm.wanandroidwithlittleblackboxstyle.view.fragment.accountpage.AccountFragment
+import com.lzm.wanandroidwithlittleblackboxstyle.utils.TopTabAddemManager
 import org.slf4j.LoggerFactory
 
 class MainActivity : AppCompatActivity(), OnTabSelectedListener{
 
-    private val logger: org.slf4j.Logger? = LoggerFactory.getLogger(MainActivity::class.java)
+    private val logger: org.slf4j.Logger = LoggerFactory.getLogger("mainpage")
 
     val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater) }
@@ -44,14 +37,17 @@ class MainActivity : AppCompatActivity(), OnTabSelectedListener{
         val view = binding.root
         setContentView(view)
 
-
-        initBottomTablayout()
+        initTablayout()
         binding.tablayoutCuttomTab.addOnTabSelectedListener(this)
         initMainFragment()
     }
 
 
-    fun initBottomTablayout(){
+    fun initTablayout(){
+
+        binding.leftTopTab.tabMode = TabLayout.MODE_SCROLLABLE
+        binding.leftTopTab.tabGravity = TabLayout.GRAVITY_START
+
         //装配底部按钮
         val buttonTitleArray= arrayOf("首页","广场","项目","我")
         val iconArray:IntArray= intArrayOf(R.drawable.home,R.drawable.square,R.drawable.project,R.drawable.account)
@@ -62,13 +58,16 @@ class MainActivity : AppCompatActivity(), OnTabSelectedListener{
     }
 
     fun initMainFragment(){
-        val tab = binding.tablayoutCuttomTab.getTabAt(0)
-        if (tab != null) {
-            tab.select()
+        binding.tablayoutCuttomTab.post {
+            val tab_1 = binding.tablayoutCuttomTab.getTabAt(1)
+            tab_1?.select()
+            val tab_0 = binding.tablayoutCuttomTab.getTabAt(0)
+            tab_0?.select()
         }
     }
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
+        logger.info("${tab?.position}")
         var currentFragment:Fragment?
         if (tab!=null){
 
@@ -86,10 +85,10 @@ class MainActivity : AppCompatActivity(), OnTabSelectedListener{
 
             //根据不同fragment装配不同的顶部按钮
             var assemTopTab:AssemTopTab =when(position){
-                0->AssemTopTab(HomepageAssemStrategyImpl(),binding.leftTopTab,binding.rightTopTab)
-                1->AssemTopTab(SquarepageAssemStrategyImpl(),binding.leftTopTab,binding.rightTopTab)
-                2->AssemTopTab(ProjectpageAssemStrategyImpl(),binding.leftTopTab,binding.rightTopTab)
-                else->AssemTopTab(AccountpageAssemStrategyImpl(),binding.leftTopTab,binding.rightTopTab)
+                0->AssemTopTab(TopTabAddemManager.homepageAssemStrategyImpl,binding.leftTopTab,binding.rightTopTab)
+                1->AssemTopTab(TopTabAddemManager.squarepageAssemStrategyImpl,binding.leftTopTab,binding.rightTopTab)
+                2->AssemTopTab(TopTabAddemManager.projectpageAssemStrategyImpl,binding.leftTopTab,binding.rightTopTab)
+                else->AssemTopTab(TopTabAddemManager.accountpageAssemStrategyImpl,binding.leftTopTab,binding.rightTopTab)
             }
 
             assemTopTab.assemTopTab(binding.leftTopTab,binding.rightTopTab)

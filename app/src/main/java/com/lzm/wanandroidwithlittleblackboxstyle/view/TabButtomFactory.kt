@@ -12,8 +12,9 @@ import com.lzm.wanandroidwithlittleblackboxstyle.view.fragment.accountpage.Accou
 import org.slf4j.LoggerFactory
 
 class TabButtomFactory(val context:Context,val tabLayout: TabLayout) {
-    private val logger: org.slf4j.Logger? = LoggerFactory.getLogger(TabButtomFactory::class.java)
+    private val logger: org.slf4j.Logger = LoggerFactory.getLogger(TabButtomFactory::class.java)
     public fun getTabItem(title:String,icon:Int):TabLayout.Tab{
+        logger.info("${title},${icon}")
         val view = LayoutInflater.from(context).inflate(R.layout.tab_item,null)
         val image:ImageView= view.findViewById(R.id.icon)
         val text:TextView = view.findViewById(R.id.title)
