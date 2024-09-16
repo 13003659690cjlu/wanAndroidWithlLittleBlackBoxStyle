@@ -1,5 +1,6 @@
 package com.lzm.wanandroidwithlittleblackboxstyle.view.fragment.squarepage
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,15 @@ import org.slf4j.LoggerFactory
 
 class ColumnFragment : Fragment() {
     private val logger: org.slf4j.Logger = LoggerFactory.getLogger("ColumnPage")
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        logger.info("绑定")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        logger.info("绑定")
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

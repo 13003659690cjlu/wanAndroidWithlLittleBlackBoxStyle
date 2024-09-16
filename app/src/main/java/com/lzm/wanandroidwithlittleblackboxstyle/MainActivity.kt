@@ -86,26 +86,6 @@ class MainActivity : AppCompatActivity(), OnTabSelectedListener{
                 fragmentManager.beginTransaction().show(currentFragment).commit()
             }
 
-            //根据不同fragment装配不同的顶部按钮
-            var assemTopTab:AssemTopTab =when(position){
-                0->AssemTopTab(TopTabAddemManager.homepageAssemStrategyImpl,binding.leftTopTab,binding.rightTopTab)
-                1->AssemTopTab(TopTabAddemManager.squarepageAssemStrategyImpl,binding.leftTopTab,binding.rightTopTab)
-                2->AssemTopTab(TopTabAddemManager.projectpageAssemStrategyImpl,binding.leftTopTab,binding.rightTopTab)
-                else->AssemTopTab(TopTabAddemManager.accountpageAssemStrategyImpl,binding.leftTopTab,binding.rightTopTab)
-            }
-
-            assemTopTab.assemTopTab(binding.leftTopTab,binding.rightTopTab)
-
-            //顶部topTab与viewpage2绑定
-            val viewPager2: ViewPager2? = currentFragment.view?.findViewById(R.id.viewPager2)
-
-            if (viewPager2 != null) {
-                TabLayoutMediator(binding.leftTopTab, viewPager2){ tab,position ->
-                }.attach()
-            }
-
-
-
             //按钮被点击时改变颜色
             val customView = tab.customView
             val textView= customView?.findViewById<TextView>(R.id.title)

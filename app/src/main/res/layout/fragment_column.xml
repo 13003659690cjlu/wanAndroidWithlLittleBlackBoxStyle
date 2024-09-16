@@ -6,9 +6,8 @@
     tools:context=".view.fragment.squarepage.ColumnFragment">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="433dp"
         android:layout_height="match_parent"
-        android:text="ColumnFragment"
-        tools:ignore="HardcodedText" />
+        android:text="ColumnFragment"/>
 
 </FrameLayout>
