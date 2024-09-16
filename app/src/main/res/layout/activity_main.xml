@@ -11,8 +11,8 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/left_top_tab"
-        android:layout_width="232dp"
-        android:layout_height="40dp"
+        android:layout_width="314dp"
+        android:layout_height="44dp"
         android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toTopOf="@+id/fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,12 +30,12 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/right_top_tab"
-        android:layout_width="174dp"
-        android:layout_height="40dp"
+        android:layout_width="96dp"
+        android:layout_height="44dp"
         android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toTopOf="@+id/fragment_container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/left_top_tab"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -45,8 +45,7 @@
         app:tabIndicatorGravity="center"
         app:tabMode="fixed"
         app:tabSelectedTextColor="#ff2f6e"
-        app:tabTextColor="@color/black" >
-    </com.google.android.material.tabs.TabLayout>
+        app:tabTextColor="@color/black"></com.google.android.material.tabs.TabLayout>
 
     <FrameLayout
         android:id="@+id/fragment_container"

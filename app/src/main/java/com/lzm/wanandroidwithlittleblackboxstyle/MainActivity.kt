@@ -8,13 +8,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.android.material.tabs.TabLayoutMediator
 import com.lzm.wanandroidwithlittleblackboxstyle.utils.AssemTopTab
 import com.lzm.wanandroidwithlittleblackboxstyle.view.TabButtomFactory
 import com.lzm.wanandroidwithlittleblackboxstyle.view.fragment.MainFragmentFactory
 import com.lzm.wanandroidwithlittleblackboxstyle.databinding.ActivityMainBinding
 import com.lzm.wanandroidwithlittleblackboxstyle.utils.TopTabAddemManager
+import com.lzm.wanandroidwithlittleblackboxstyle.view.fragment.BaseFragment
 import org.slf4j.LoggerFactory
 
 class MainActivity : AppCompatActivity(), OnTabSelectedListener{
@@ -92,6 +95,15 @@ class MainActivity : AppCompatActivity(), OnTabSelectedListener{
             }
 
             assemTopTab.assemTopTab(binding.leftTopTab,binding.rightTopTab)
+
+            //顶部topTab与viewpage2绑定
+            val viewPager2: ViewPager2? = currentFragment.view?.findViewById(R.id.viewPager2)
+
+            if (viewPager2 != null) {
+                TabLayoutMediator(binding.leftTopTab, viewPager2){ tab,position ->
+                }.attach()
+            }
+
 
 
             //按钮被点击时改变颜色

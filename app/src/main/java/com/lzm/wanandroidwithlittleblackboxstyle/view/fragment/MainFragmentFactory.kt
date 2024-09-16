@@ -14,8 +14,8 @@ class MainFragmentFactory {
     public fun getMainFragment(positon:Int):Fragment{
        return when(positon){
             0 -> HomeFragment(BaseViewModel())
-            1 -> ProjectFragment(BaseViewModel())
-            2 -> SquareFragment(BaseViewModel())
+            1 -> SquareFragment(BaseViewModel())
+            2 -> ProjectFragment(BaseViewModel())
             else -> AccountFragment(BaseViewModel())
         }
     }

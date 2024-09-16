@@ -8,7 +8,7 @@ class SquarepageAssemStrategyImpl:ITopTabAssemblyStrategy {
     override fun AssemblyStrategy(leftTab: TabLayout, rightTab: TabLayout) {
         leftTab.removeAllTabs()
         leftTab.removeAllTabs()
-        val buttonTitleArray= arrayOf("广场")
+        val buttonTitleArray= arrayOf("问答","专栏","路线")
         for(index in buttonTitleArray.indices){
             val tab = leftTab.newTab()
             tab.setText(buttonTitleArray.get(index))
