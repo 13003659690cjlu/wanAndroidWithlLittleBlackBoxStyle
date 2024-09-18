@@ -34,12 +34,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:tabGravity="fill"
-        app:tabIconTint="#ff2f6e"
         app:tabIndicator="@null"
         app:tabIndicatorGravity="center"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="#ff2f6e"
-        app:tabTextColor="@color/black"></com.google.android.material.tabs.TabLayout>
+        app:tabMode="fixed">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/search" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/message" />
+
+    </com.google.android.material.tabs.TabLayout>
 
     <FrameLayout
         android:id="@+id/fragment_container"

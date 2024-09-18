@@ -52,7 +52,7 @@ class SquareFragment(viewModel: BaseViewModel) : BaseFragment(viewModel) {
 
         leftTabLayout.removeAllTabs()
 //        装配顶部tablayout
-        val buttonTitleArray= arrayOf("answ","column","route")
+        val buttonTitleArray= arrayOf("问答","专栏","路线")
 //        viewpage绑定tablayout
         TabLayoutMediator(leftTabLayout,viewPage){tab,position ->
             tab.setText(buttonTitleArray[position])
