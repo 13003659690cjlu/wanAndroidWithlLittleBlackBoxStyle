@@ -28,7 +28,7 @@ class AccountFragment(viewModel: BaseViewModel) : BaseFragment(viewModel) {
 
 
     private val fragments: List<Fragment> by lazy {
-        listOf(DataFragment(),CollectFragment())
+        listOf(DataFragment(BaseViewModel()),CollectFragment())
     }
 
 
@@ -62,4 +62,35 @@ class AccountFragment(viewModel: BaseViewModel) : BaseFragment(viewModel) {
             }
         })
     }
+
+    override fun onStart() {
+        super.onStart()
+        logger.info("onResume")
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        logger.info("onResume")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        logger.info("onPause")
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        logger.info("onDestroyView")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        logger.info("onDestroy")
+    }
+
+
+
 }

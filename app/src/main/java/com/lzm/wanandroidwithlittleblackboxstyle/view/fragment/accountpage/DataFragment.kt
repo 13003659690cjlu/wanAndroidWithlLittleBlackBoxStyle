@@ -1,60 +1,82 @@
 package com.lzm.wanandroidwithlittleblackboxstyle.view.fragment.accountpage
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.lzm.wanandroidwithlittleblackboxstyle.R
+import com.lzm.wanandroidwithlittleblackboxstyle.viewmodel.BaseViewModel
+import org.slf4j.LoggerFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class DataFragment(val vM: BaseViewModel) : Fragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DataFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class DataFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val logger: org.slf4j.Logger = LoggerFactory.getLogger(DataFragment::class.java)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_data, container, false)
+        val view = inflater.inflate(R.layout.fragment_data, container, false)
+
+        val loginButton = view.findViewById<Button>(R.id.login)
+
+        loginButton.setOnClickListener {
+            showLoginDialog()
+        }
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DataFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DataFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun showLoginDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.login_dialog, null)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setTitle("登录界面")
+            .create()
+
+        dialogView.findViewById<Button>(R.id.loginButton).setOnClickListener {
+
+        }
+
+        dialogView.findViewById<Button>(R.id.cancelButton).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        //设置密码栏状态
+        val passwordEditText: EditText = dialogView.findViewById(R.id.passwordEditText)
+        val showHidePasswordButton: ImageButton = dialogView.findViewById(R.id.showHidePasswordButton)
+        // 初始时密码框为隐藏密码状态
+        passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+        // 使用扩展函数处理密码可见性切换逻辑
+        showHidePasswordButton.togglePasswordVisibility(passwordEditText)
+
+
+        dialog.show()
+    }
+
+
+
+    //按钮密码是否可见
+    fun ImageButton.togglePasswordVisibility(passwordEditText: EditText) {
+        this.setOnClickListener {
+            // 切换密码框可见性
+            if (passwordEditText.transformationMethod == PasswordTransformationMethod.getInstance()) {
+                // 当前为隐藏密码状态，切换为显示密码状态
+                passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                this.setImageResource(R.drawable.ic_visibility_on)
+            } else {
+                // 当前为显示密码状态，切换为隐藏密码状态
+                passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                this.setImageResource(R.drawable.ic_visibility_off)
             }
+        }
     }
 }

@@ -83,7 +83,17 @@ class MainActivity : AppCompatActivity(), OnTabSelectedListener{
                 currentFragment=mainFragmentFactory.getMainFragment(position)
                 fragmentManager.beginTransaction().replace(R.id.fragment_container,currentFragment,tag).commit()
             }else{
-                fragmentManager.beginTransaction().show(currentFragment).commit()
+//                不销毁之前的fragment
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                val fragments = supportFragmentManager.fragments
+                for (fragment in fragments) {
+                    if (fragment.tag == tag) {
+                        fragmentTransaction.show(fragment)
+                    } else {
+                        fragmentTransaction.hide(fragment)
+                    }
+                }
+                fragmentTransaction.commit()
             }
 
             //按钮被点击时改变颜色
