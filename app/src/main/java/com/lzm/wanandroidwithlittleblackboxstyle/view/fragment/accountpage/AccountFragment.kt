@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.lzm.wanandroidwithlittleblackboxstyle.R
 import com.lzm.wanandroidwithlittleblackboxstyle.view.adapter.FragmentAdapter
 import com.lzm.wanandroidwithlittleblackboxstyle.view.fragment.BaseFragment
+import com.lzm.wanandroidwithlittleblackboxstyle.viewmodel.AccountViewModel
 import com.lzm.wanandroidwithlittleblackboxstyle.viewmodel.BaseViewModel
 import org.slf4j.LoggerFactory
 
@@ -26,9 +27,10 @@ class AccountFragment(viewModel: BaseViewModel) : BaseFragment(viewModel) {
         requireActivity().findViewById(R.id.left_top_tab)
     }
 
+    val accountViewModel by lazy { AccountViewModel() }
 
     private val fragments: List<Fragment> by lazy {
-        listOf(DataFragment(BaseViewModel()),CollectFragment())
+        listOf(DataFragment(accountViewModel),CollectFragment(accountViewModel))
     }
 
 
@@ -62,35 +64,6 @@ class AccountFragment(viewModel: BaseViewModel) : BaseFragment(viewModel) {
             }
         })
     }
-
-    override fun onStart() {
-        super.onStart()
-        logger.info("onResume")
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        logger.info("onResume")
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        logger.info("onPause")
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        logger.info("onDestroyView")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        logger.info("onDestroy")
-    }
-
 
 
 }
