@@ -29,7 +29,7 @@ class HomeFragment(viewModel: BaseViewModel) : BaseFragment(viewModel) {
 
 
     private val fragments: List<Fragment> by lazy {
-        listOf(RecommendArticleFragment())
+        listOf(RecommendArticleFragment(viewModel))
     }
 
 

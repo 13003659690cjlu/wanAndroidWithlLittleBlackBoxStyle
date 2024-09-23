@@ -1,12 +1,12 @@
 package com.lzm.wanandroidwithlittleblackboxstyle.viewmodel
 
-import com.lzm.wanandroidwithlittleblackboxstyle.model.LoginRequest
+import com.lzm.wanandroidwithlittleblackboxstyle.model.bean.ArticlesData
 import com.lzm.wanandroidwithlittleblackboxstyle.model.ResponseBean
-import com.lzm.wanandroidwithlittleblackboxstyle.model.UserInfo
+import com.lzm.wanandroidwithlittleblackboxstyle.model.bean.UserInfo
 import retrofit2.Call
-import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -18,4 +18,7 @@ interface ApiService {
 
     @GET("user/logout/json")
     fun logout():Call<ResponseBean<String>>
+
+    @GET("article/list/{page}/json")
+    fun getArticles(@Path("page") page: Int): Call<ResponseBean<ArticlesData>>
 }

@@ -1,4 +1,4 @@
-package com.lzm.wanandroidwithlittleblackboxstyle.model
+package com.lzm.wanandroidwithlittleblackboxstyle.model.bean
 
 
 data class UserInfo(

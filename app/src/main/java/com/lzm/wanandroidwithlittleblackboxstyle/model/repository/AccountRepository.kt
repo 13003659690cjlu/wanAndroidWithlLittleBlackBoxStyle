@@ -1,11 +1,12 @@
-package com.lzm.wanandroidwithlittleblackboxstyle.model
+package com.lzm.wanandroidwithlittleblackboxstyle.model.repository
 
+import com.lzm.wanandroidwithlittleblackboxstyle.model.ResponseBean
+import com.lzm.wanandroidwithlittleblackboxstyle.model.bean.UserInfo
 import com.lzm.wanandroidwithlittleblackboxstyle.utils.RetrofitUtils
 import org.slf4j.LoggerFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Objects
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
