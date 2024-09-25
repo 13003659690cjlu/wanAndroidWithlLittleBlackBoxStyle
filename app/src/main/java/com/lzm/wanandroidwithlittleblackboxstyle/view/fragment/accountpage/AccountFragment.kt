@@ -30,7 +30,7 @@ class AccountFragment(viewModel: BaseViewModel) : BaseFragment(viewModel) {
     val accountViewModel by lazy { AccountViewModel() }
 
     private val fragments: List<Fragment> by lazy {
-        listOf(DataFragment(accountViewModel),CollectFragment(accountViewModel))
+        listOf(DataFragment(),CollectFragment(accountViewModel))
     }
 
 

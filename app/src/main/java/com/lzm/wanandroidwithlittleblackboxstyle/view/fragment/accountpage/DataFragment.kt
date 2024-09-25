@@ -14,39 +14,61 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.lzm.wanandroidwithlittleblackboxstyle.R
+import com.lzm.wanandroidwithlittleblackboxstyle.model.ResponseBean
 import com.lzm.wanandroidwithlittleblackboxstyle.viewmodel.AccountViewModel
 import com.lzm.wanandroidwithlittleblackboxstyle.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 
-class DataFragment(var vM: BaseViewModel) : Fragment() {
+class DataFragment() : Fragment() {
 
     private val logger: org.slf4j.Logger = LoggerFactory.getLogger(DataFragment::class.java)
     private lateinit var view: View
-
+    private val accountViewModel:AccountViewModel by lazy {
+        ViewModelProvider(this).get(AccountViewModel::class.java)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         view = inflater.inflate(R.layout.fragment_data, container, false)
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val loginButton = view.findViewById<Button>(R.id.login)
         loginButton.setOnClickListener {
             showLoginDialog()
         }
 
+//
+//        val lougoutButton = view.findViewById<Button>(R.id.logout)
+//        lougoutButton.setOnClickListener {
+//            logout()
+//        }
 
-        val lougoutButton = view.findViewById<Button>(R.id.logout)
-        lougoutButton.setOnClickListener {
-            logout()
-        }
+        accountViewModel.loginInfo.observe(viewLifecycleOwner, Observer {
+                loginInfo ->
+            if(loginInfo.errorCode==0){
+                Toast.makeText(requireContext(), "登录成功", Toast.LENGTH_SHORT).show()
+                loginButton.visibility = View.GONE
+                view.findViewById<Button>(R.id.register).visibility = View.GONE
+                view.findViewById<Button>(R.id.logout).visibility = View.VISIBLE
+            }else{
+                Toast.makeText(requireContext(), "登录失败：${loginInfo.errorMsg}", Toast.LENGTH_SHORT).show()
+            }
+        })
 
-
-
-        return view
     }
+
+
+
 
     private fun showLoginDialog() {
         val dialogView = layoutInflater.inflate(R.layout.login_dialog, null)
@@ -61,21 +83,7 @@ class DataFragment(var vM: BaseViewModel) : Fragment() {
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(requireContext(), "用户名或密码不能为空", Toast.LENGTH_SHORT).show()
             } else {
-                lifecycleScope.launch {
-                    val loginData = (vM as AccountViewModel).login(username, password)
-                    //ui操作放到主线程
-                    Handler(Looper.getMainLooper()).post {
-                        if ("登录成功".equals(loginData)) {
-                            Toast.makeText(requireContext(), "登录成功", Toast.LENGTH_SHORT).show()
-                            dialog.dismiss()
-                            view.findViewById<Button>(R.id.login).visibility = View.GONE
-                            view.findViewById<Button>(R.id.register).visibility = View.GONE
-                            view.findViewById<Button>(R.id.logout).visibility = View.VISIBLE
-                        } else {
-                            Toast.makeText(requireContext(), loginData, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
+                accountViewModel.login(username,password)
             }
         }
 
@@ -114,19 +122,19 @@ class DataFragment(var vM: BaseViewModel) : Fragment() {
 
 
 
-    fun logout(){
-        lifecycleScope.launch {
-            val logoutData = (vM as AccountViewModel).logout()
-            Handler(Looper.getMainLooper()).post {
-                if ("登出成功".equals(logoutData)) {
-                    Toast.makeText(requireContext(), "登出成功", Toast.LENGTH_SHORT).show()
-                    view.findViewById<Button>(R.id.login).visibility = View.VISIBLE
-                    view.findViewById<Button>(R.id.register).visibility = View.VISIBLE
-                    view.findViewById<Button>(R.id.logout).visibility = View.GONE
-                } else {
-                    Toast.makeText(requireContext(), logoutData, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
+//    fun logout(){
+//        lifecycleScope.launch {
+//            val logoutData = (vM as AccountViewModel).logout()
+//            Handler(Looper.getMainLooper()).post {
+//                if ("登出成功".equals(logoutData)) {
+//                    Toast.makeText(requireContext(), "登出成功", Toast.LENGTH_SHORT).show()
+//                    view.findViewById<Button>(R.id.login).visibility = View.VISIBLE
+//                    view.findViewById<Button>(R.id.register).visibility = View.VISIBLE
+//                    view.findViewById<Button>(R.id.logout).visibility = View.GONE
+//                } else {
+//                    Toast.makeText(requireContext(), logoutData, Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
+//    }
 }
