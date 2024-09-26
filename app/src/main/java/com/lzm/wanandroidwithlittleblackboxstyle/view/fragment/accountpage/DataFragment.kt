@@ -1,8 +1,6 @@
 package com.lzm.wanandroidwithlittleblackboxstyle.view.fragment.accountpage
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
@@ -16,12 +14,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.lzm.wanandroidwithlittleblackboxstyle.R
-import com.lzm.wanandroidwithlittleblackboxstyle.model.ResponseBean
+import com.lzm.wanandroidwithlittleblackboxstyle.utils.ToastUtil
 import com.lzm.wanandroidwithlittleblackboxstyle.viewmodel.AccountViewModel
-import com.lzm.wanandroidwithlittleblackboxstyle.viewmodel.BaseViewModel
-import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 
 class DataFragment() : Fragment() {
@@ -31,6 +26,16 @@ class DataFragment() : Fragment() {
     private val accountViewModel:AccountViewModel by lazy {
         ViewModelProvider(this).get(AccountViewModel::class.java)
     }
+
+    private val dialogView by lazy { layoutInflater.inflate(R.layout.login_dialog, null) }
+    private val loginDialog by lazy { AlertDialog.Builder(requireContext())
+        .setView(dialogView)
+        .setTitle("登录界面")
+        .create() }
+
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,21 +52,36 @@ class DataFragment() : Fragment() {
             showLoginDialog()
         }
 
-//
-//        val lougoutButton = view.findViewById<Button>(R.id.logout)
-//        lougoutButton.setOnClickListener {
-//            logout()
-//        }
+
+        val lougoutButton = view.findViewById<Button>(R.id.logout)
+        lougoutButton.setOnClickListener {
+            accountViewModel.logout()
+        }
 
         accountViewModel.loginInfo.observe(viewLifecycleOwner, Observer {
                 loginInfo ->
             if(loginInfo.errorCode==0){
-                Toast.makeText(requireContext(), "登录成功", Toast.LENGTH_SHORT).show()
+                loginDialog.dismiss()
+                ToastUtil.showCustomToast(requireContext(), "登录成功")
                 loginButton.visibility = View.GONE
                 view.findViewById<Button>(R.id.register).visibility = View.GONE
                 view.findViewById<Button>(R.id.logout).visibility = View.VISIBLE
             }else{
-                Toast.makeText(requireContext(), "登录失败：${loginInfo.errorMsg}", Toast.LENGTH_SHORT).show()
+                ToastUtil.showCustomToast(requireContext(), "登录失败")
+            }
+        })
+
+
+
+        accountViewModel.logoutInfo.observe(viewLifecycleOwner, Observer {
+                logoutInfo ->
+            if(logoutInfo.errorCode==0){
+                ToastUtil.showCustomToast(requireContext(), "登出成功")
+                loginButton.visibility = View.VISIBLE
+                view.findViewById<Button>(R.id.register).visibility = View.VISIBLE
+                view.findViewById<Button>(R.id.logout).visibility = View.GONE
+            }else{
+                ToastUtil.showCustomToast(requireContext(), "登出失败")
             }
         })
 
@@ -71,24 +91,18 @@ class DataFragment() : Fragment() {
 
 
     private fun showLoginDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.login_dialog, null)
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .setTitle("登录界面")
-            .create()
-
         dialogView.findViewById<Button>(R.id.loginButton).setOnClickListener {
             val username = dialogView.findViewById<EditText>(R.id.usernameEditText).text.toString()
             val password = dialogView.findViewById<EditText>(R.id.passwordEditText).text.toString()
             if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(requireContext(), "用户名或密码不能为空", Toast.LENGTH_SHORT).show()
+                ToastUtil.showCustomToast(requireContext(),"用户名或密码不能为空")
             } else {
                 accountViewModel.login(username,password)
             }
         }
 
         dialogView.findViewById<Button>(R.id.cancelButton).setOnClickListener {
-            dialog.dismiss()
+            loginDialog.dismiss()
         }
 
         //设置密码栏状态
@@ -99,7 +113,7 @@ class DataFragment() : Fragment() {
         // 使用扩展函数处理密码可见性切换逻辑
         showHidePasswordButton.togglePasswordVisibility(passwordEditText)
 
-        dialog.show()
+        loginDialog.show()
     }
 
 
@@ -121,20 +135,8 @@ class DataFragment() : Fragment() {
     }
 
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 
-//    fun logout(){
-//        lifecycleScope.launch {
-//            val logoutData = (vM as AccountViewModel).logout()
-//            Handler(Looper.getMainLooper()).post {
-//                if ("登出成功".equals(logoutData)) {
-//                    Toast.makeText(requireContext(), "登出成功", Toast.LENGTH_SHORT).show()
-//                    view.findViewById<Button>(R.id.login).visibility = View.VISIBLE
-//                    view.findViewById<Button>(R.id.register).visibility = View.VISIBLE
-//                    view.findViewById<Button>(R.id.logout).visibility = View.GONE
-//                } else {
-//                    Toast.makeText(requireContext(), logoutData, Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-//    }
 }

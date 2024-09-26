@@ -37,4 +37,10 @@ object RetrofitUtils {
         this.password=password
     }
 
+
+    fun logoutAccount(){
+        this.username=""
+        this.password=""
+    }
+
 }

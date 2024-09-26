@@ -16,7 +16,8 @@ class AccountViewModel: BaseViewModel() {
     private val _loginInfo = MutableLiveData<ResponseBean<UserInfo>>()
     val loginInfo: LiveData<ResponseBean<UserInfo>> get() = _loginInfo
 
-
+    private val _logoutInfo = MutableLiveData<ResponseBean<String>>()
+    val logoutInfo: LiveData<ResponseBean<String>> get() = _logoutInfo
 
     private val accountRepository by lazy { AccountRepository() }
     fun login(usernama:String,password:String){
@@ -36,8 +37,20 @@ class AccountViewModel: BaseViewModel() {
         }
     }
 
-    suspend fun logout():String{
-        val logoutData = accountRepository.logout()
-        return logoutData
+    fun logout(){
+        viewModelScope.launch {
+            accountRepository.logout{
+                result ->
+                result.onSuccess { logoutData ->
+                    if(logoutData.errorCode==0){
+                        RetrofitUtils.logoutAccount()
+                    }
+                    _logoutInfo.postValue(logoutData)
+                }
+                result.onFailure { exception ->
+                    logger.info("${exception.message}")
+                }
+            }
+        }
     }
 }
