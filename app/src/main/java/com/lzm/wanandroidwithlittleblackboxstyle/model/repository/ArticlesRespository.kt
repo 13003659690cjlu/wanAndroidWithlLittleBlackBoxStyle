@@ -15,37 +15,27 @@ import kotlin.coroutines.suspendCoroutine
 class ArticlesRespository {
     private val logger = LoggerFactory.getLogger(ArticlesRespository::class.java)
 
-
-    suspend fun getArticles(page:Int): ArticlesData {
-        return suspendCoroutine { continuation ->
-            val httpService = RetrofitUtils.getHttpService()
-            val getArticlesCall = httpService.getArticles(page)
-            var articles:ArticlesData?=null
-            getArticlesCall.enqueue(object : Callback<ResponseBean<ArticlesData>> {
-                override fun onResponse(call: Call<ResponseBean<ArticlesData>>, response: Response<ResponseBean<ArticlesData>>) {
-                    if (response.isSuccessful) {
-                        logger.info(response.body().toString())
-                        val responseBean: ResponseBean<ArticlesData>? = response.body()
-                        if (responseBean?.errorCode == 0) {
-                            logger.info("获取文章成功")
-                            articles= responseBean.data
-                        } else {
-                            logger.info("获取文章失败")
-                        }
-                        continuation.resume(articles)
-                    }
+    fun getArticles(page:Int, callback: (Result<ResponseBean<ArticlesData>>) -> Unit) {
+        val httpService = RetrofitUtils.getHttpService()
+        val articlesCall = httpService.getArticles(page)
+        articlesCall.enqueue(object : Callback<ResponseBean<ArticlesData>> {
+            override fun onResponse(call: Call<ResponseBean<ArticlesData>>, response: Response<ResponseBean<ArticlesData>>) {
+                if (response.isSuccessful) {
+                    logger.info(response.body().toString())
+                    callback(Result.success(response.body() as ResponseBean<ArticlesData>))
                 }
-
-                override fun onFailure(call: Call<ResponseBean<ArticlesData>>, t: Throwable) {
-                    logger.info("登录请求失败")
-                    t.printStackTrace()
-                    continuation.resumeWithException(t)
+                else{
+                    callback(Result.failure(Exception("Failed to fetch data")))
                 }
-            })
-        }
+            }
+
+            override fun onFailure(call: Call<ResponseBean<ArticlesData>>, t: Throwable) {
+                logger.info("登录请求失败")
+                t.printStackTrace()
+            }
+        })
     }
-}
 
-private fun Any.resume(value: ArticlesData?) {
+
 
 }
