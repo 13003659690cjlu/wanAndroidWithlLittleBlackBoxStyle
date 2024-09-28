@@ -6,7 +6,7 @@ import java.util.Locale
 
 object TimeUtil {
     fun millisToDateTime(millis: Long): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        val sdf = SimpleDateFormat("MM-dd HH:mm", Locale.getDefault())
         return sdf.format(Date(millis))
     }
 
