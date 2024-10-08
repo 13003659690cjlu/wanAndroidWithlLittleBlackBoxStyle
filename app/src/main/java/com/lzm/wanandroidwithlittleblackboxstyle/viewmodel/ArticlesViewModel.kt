@@ -18,14 +18,14 @@ class ArticlesViewModel:BaseViewModel() {
     private val _articlesData = MutableLiveData<List<ArticleItem>>()
     val articlesData:LiveData<List<ArticleItem>> get() = _articlesData
     private val articlesRepository by lazy { ArticlesRespository() }
-
+    private var page=0
     init {
         _articlesData.value = mutableListOf() // 初始化为空的 MutableList
     }
 
-    fun getArticles(page:Int){
+    fun getArticles(){
         viewModelScope.launch {
-            articlesRepository.getArticles(page){
+            articlesRepository.getArticles(page++){
                 result ->
                 result.onSuccess { articlesDatas ->
                     if(articlesDatas.errorCode==0){

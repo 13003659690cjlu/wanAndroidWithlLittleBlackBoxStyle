@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2
@@ -43,6 +44,26 @@ class MainActivity : AppCompatActivity(), OnTabSelectedListener{
         initTablayout()
         binding.tablayoutCuttomTab.addOnTabSelectedListener(this)
         initMainFragment()
+
+        val fragmentContainer = binding.fragmentContainer
+        val originalBottomMargin = (fragmentContainer.layoutParams as ConstraintLayout.LayoutParams).bottomMargin
+
+        val rootView = binding.main
+        rootView.viewTreeObserver.addOnGlobalLayoutListener {
+            val heightDiff = rootView.rootView.height - rootView.height
+            if (heightDiff > 100) { // 这个值可以根据需要调整
+                // 键盘弹出时的处理
+                val layoutParams = fragmentContainer.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.bottomMargin = originalBottomMargin + heightDiff // 调整底部边距
+                fragmentContainer.layoutParams = layoutParams
+            } else {
+                // 键盘隐藏时的处理
+                val layoutParams = fragmentContainer.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.bottomMargin = originalBottomMargin
+                fragmentContainer.layoutParams = layoutParams
+            }
+        }
+
     }
 
 

@@ -52,14 +52,13 @@
 
     <FrameLayout
         android:id="@+id/fragment_container"
-        android:layout_width="400dp"
-        android:layout_height="635dp"
+        android:layout_width="402dp"
+        android:layout_height="630dp"
+        android:layout_marginBottom="28dp"
         app:layout_constraintBottom_toTopOf="@+id/tablayout_cuttom_tab"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96" />
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout_cuttom_tab"

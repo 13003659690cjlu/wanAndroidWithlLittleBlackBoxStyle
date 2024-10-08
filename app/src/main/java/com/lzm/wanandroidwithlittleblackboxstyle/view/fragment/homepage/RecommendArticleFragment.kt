@@ -14,6 +14,7 @@ import com.lzm.wanandroidwithlittleblackboxstyle.databinding.FragmentRecommend2B
 import com.lzm.wanandroidwithlittleblackboxstyle.model.bean.ArticleItem
 import com.lzm.wanandroidwithlittleblackboxstyle.model.bean.ArticleTag
 import com.lzm.wanandroidwithlittleblackboxstyle.view.adapter.ArticleAdapter
+import com.lzm.wanandroidwithlittleblackboxstyle.view.adapter.SpaceItemDecoration
 import com.lzm.wanandroidwithlittleblackboxstyle.viewmodel.ArticlesViewModel
 import com.lzm.wanandroidwithlittleblackboxstyle.viewmodel.BaseViewModel
 
@@ -44,7 +45,8 @@ class RecommendArticleFragment(viewModel: BaseViewModel) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.articlesRecycleView.layoutManager = LinearLayoutManager(requireContext())
         binding.articlesRecycleView.adapter = articleAdapter
-        articlesViewModel.getArticles(page)
+        binding.articlesRecycleView.addItemDecoration(SpaceItemDecoration(10,30))
+        articlesViewModel.getArticles()
         articlesViewModel.articlesData.observe(viewLifecycleOwner, { newArticles ->
             articles.addAll(newArticles)
             articleAdapter.notifyDataSetChanged()
@@ -64,7 +66,7 @@ class RecommendArticleFragment(viewModel: BaseViewModel) : Fragment() {
                     && totalItemCount >= PAGE_SIZE
                 ) {
                     // 滑动到底部执行加载更多数据的操作
-                    articlesViewModel.getArticles(++page)
+                    articlesViewModel.getArticles()
                 }
 
             }
