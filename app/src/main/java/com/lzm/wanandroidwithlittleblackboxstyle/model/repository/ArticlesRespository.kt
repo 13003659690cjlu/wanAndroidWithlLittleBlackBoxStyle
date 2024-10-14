@@ -37,5 +37,46 @@ class ArticlesRespository {
     }
 
 
+    fun collectArticles(id:Int, callback: (Result<ResponseBean<String>>) -> Unit) {
+        val httpService = RetrofitUtils.getHttpService()
+        val articlesCall = httpService.collectInnerArticle(id,"loginUserName=${RetrofitUtils.username}","loginUserPassword=${RetrofitUtils.password}")
+        articlesCall.enqueue(object : Callback<ResponseBean<String>> {
+            override fun onResponse(call: Call<ResponseBean<String>>, response: Response<ResponseBean<String>>) {
+                if (response.isSuccessful) {
+                    logger.info(response.body().toString())
+                    callback(Result.success(response.body() as ResponseBean<String>))
+                }
+                else{
+                    callback(Result.failure(Exception("Failed to collect article")))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBean<String>>, t: Throwable) {
+                logger.info("收藏文章失败")
+                t.printStackTrace()
+            }
+        })
+    }
+
+    fun uncollectArticles(id:Int, callback: (Result<ResponseBean<String>>) -> Unit) {
+        val httpService = RetrofitUtils.getHttpService()
+        val articlesCall = httpService.uncollectInnerArticle(id,"loginUserName=${RetrofitUtils.username}","loginUserPassword=${RetrofitUtils.password}")
+        articlesCall.enqueue(object : Callback<ResponseBean<String>> {
+            override fun onResponse(call: Call<ResponseBean<String>>, response: Response<ResponseBean<String>>) {
+                if (response.isSuccessful) {
+                    logger.info(response.body().toString())
+                    callback(Result.success(response.body() as ResponseBean<String>))
+                }
+                else{
+                    callback(Result.failure(Exception("Failed to collect article")))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBean<String>>, t: Throwable) {
+                logger.info("收藏文章失败")
+                t.printStackTrace()
+            }
+        })
+    }
 
 }

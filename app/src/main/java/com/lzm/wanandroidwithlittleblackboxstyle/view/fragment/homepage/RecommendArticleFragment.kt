@@ -13,6 +13,8 @@ import com.lzm.wanandroidwithlittleblackboxstyle.R
 import com.lzm.wanandroidwithlittleblackboxstyle.databinding.FragmentRecommend2Binding
 import com.lzm.wanandroidwithlittleblackboxstyle.model.bean.ArticleItem
 import com.lzm.wanandroidwithlittleblackboxstyle.model.bean.ArticleTag
+import com.lzm.wanandroidwithlittleblackboxstyle.utils.RetrofitUtils
+import com.lzm.wanandroidwithlittleblackboxstyle.utils.ToastUtil
 import com.lzm.wanandroidwithlittleblackboxstyle.view.adapter.ArticleAdapter
 import com.lzm.wanandroidwithlittleblackboxstyle.view.adapter.SpaceItemDecoration
 import com.lzm.wanandroidwithlittleblackboxstyle.viewmodel.ArticlesViewModel
@@ -28,7 +30,17 @@ class RecommendArticleFragment(viewModel: BaseViewModel) : Fragment() {
     }
 
     private val articles: MutableList<ArticleItem> by lazy { mutableListOf() }
-    private val articleAdapter by lazy { ArticleAdapter(articles) }
+    private val articleAdapter by lazy { ArticleAdapter(articles){ position: Int ->
+        if(RetrofitUtils.username.isBlank()){
+            ToastUtil.showCustomToast(requireContext(),"请先登录")
+        }else{
+            if(articles.get(position).collect){
+                articlesViewModel.collectInnerArticle(articles.get(position).id)
+            }else{
+                articlesViewModel.uncollectInnerArticle(articles.get(position).id)
+            }
+        }
+    } }
     private var page = 0
 
 

@@ -42,4 +42,40 @@ class ArticlesViewModel:BaseViewModel() {
             }
         }
     }
+
+    fun collectInnerArticle(id:Int){
+        viewModelScope.launch {
+            articlesRepository.collectArticles(id){
+                    result ->
+                result.onSuccess { articlesDatas ->
+                    if(articlesDatas.errorCode==0){
+
+                    }else{
+                        ToastUtil.showCustomToast(MyApplication.getInstance(),"收藏失败:${articlesDatas.errorMsg}")
+                    }
+                }
+                result.onFailure { exception ->
+                    logger.info("${exception.message}")
+                }
+            }
+        }
+    }
+
+    fun uncollectInnerArticle(id:Int){
+        viewModelScope.launch {
+            articlesRepository.uncollectArticles(id){
+                    result ->
+                result.onSuccess { articlesDatas ->
+                    if(articlesDatas.errorCode==0){
+
+                    }else{
+                        ToastUtil.showCustomToast(MyApplication.getInstance(),"取消收藏失败:${articlesDatas.errorMsg}")
+                    }
+                }
+                result.onFailure { exception ->
+                    logger.info("${exception.message}")
+                }
+            }
+        }
+    }
 }
